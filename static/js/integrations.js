@@ -11,7 +11,7 @@ const PythonIntegration = {
     class="modal modal-small fixed-left fade shadow-sm" tabindex="-1" role="dialog"
 >
     <ModalDialog
-            v-model:description="description"
+            v-model:name="config.name"
             v-model:is_default="is_default"
             @update="update"
             @create="create"
@@ -73,18 +73,20 @@ const PythonIntegration = {
         },
         body_data() {
             let {
-                description,
+                config,
                 is_default,
                 project_id,
+
                 save_intermediates_to,
                 requirements,
                 status,
             } = this
             requirements = this.convertStrToList(requirements)
             return {
-                description,
+                config,
                 is_default,
                 project_id,
+
                 save_intermediates_to,
                 requirements,
                 status,
@@ -100,7 +102,7 @@ const PythonIntegration = {
     methods: {
         convertStrToList(str){
             if (typeof str != "string")
-                return str 
+                return str
 
             if (str.trim()==""){
                 return null
@@ -109,13 +111,13 @@ const PythonIntegration = {
         },
 
         convertListToStr(value){
-            if (!value) 
+            if (!value)
                 return null
-            
+
             isNotArray = !Array.isArray(value)
             if (isNotArray)
                 return value
-            
+
             return value.join(", ")
         },
 
@@ -133,9 +135,9 @@ const PythonIntegration = {
         },
         handleEdit(data) {
             console.debug('python editIntegration', data)
-            const {description, is_default, id, settings} = data
+            const {config, is_default, id, settings} = data
             settings['requirements'] = this.convertListToStr(settings['requirements'])
-            this.load({...settings, description, is_default, id})
+            this.load({...settings, config, is_default, id})
             this.modal.modal('show')
         },
         handleDelete(id) {
@@ -204,7 +206,7 @@ const PythonIntegration = {
             })
         },
         initialState: () => ({
-            description: '',
+            config: {},
             is_default: false,
             is_fetching: false,
             error: {},
