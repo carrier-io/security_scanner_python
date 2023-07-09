@@ -8,7 +8,7 @@ const PythonIntegration = {
     computed: {
         body_data() {
             let {
-                description,
+                config,
                 is_default,
                 selected_integration: id,
                 save_intermediates_to,
@@ -16,7 +16,7 @@ const PythonIntegration = {
             } = this
             requirements = this.convertStrToList(requirements)
             return {
-                description,
+                config,
                 is_default,
                 id,
                 save_intermediates_to,
@@ -33,7 +33,7 @@ const PythonIntegration = {
     methods: {
         convertStrToList(str){
             if (typeof str != "string")
-                return str 
+                return str
 
             if (str.trim()==""){
                 return null
@@ -42,13 +42,13 @@ const PythonIntegration = {
         },
 
         convertListToStr(value){
-            if (!value) 
+            if (!value)
                 return null
-            
+
             isNotArray = !Array.isArray(value)
             if (isNotArray)
                 return value
-            
+
             return value.join(", ")
         },
 
@@ -83,6 +83,7 @@ const PythonIntegration = {
 
         initialState: () => ({
             // toggle: false,
+            config: {},
             error: {},
             save_intermediates_to: '/data/intermediates/sast',
             requirements: "requirements.txt",
@@ -127,4 +128,3 @@ const PythonIntegration = {
 
 
 register_component('scanner-python', PythonIntegration)
-
