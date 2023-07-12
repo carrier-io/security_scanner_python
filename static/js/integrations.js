@@ -66,7 +66,7 @@ const PythonIntegration = {
     },
     computed: {
         apiPath() {
-            return this.api_base + 'integration/'
+            return V.build_api_url('integrations', 'integration') + '/'
         },
         project_id() {
             return getSelectedProjectId()
@@ -144,6 +144,10 @@ const PythonIntegration = {
             this.load({id})
             this.delete()
         },
+        handleSetDefault(id) {
+            this.load({id})
+            this.set_default()
+        },
         create() {
             this.is_fetching = true
             fetch(this.apiPath + this.pluginName, {
@@ -176,7 +180,7 @@ const PythonIntegration = {
         },
         update() {
             this.is_fetching = true
-            fetch(this.apiPath + this.id, {
+            fetch(this.apiPath + this.project_id + '/'+ this.id, {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(this.body_data)
@@ -192,7 +196,7 @@ const PythonIntegration = {
         },
         delete() {
             this.is_fetching = true
-            fetch(this.apiPath + this.id, {
+            fetch(this.apiPath + this.project_id + '/'+ this.id, {
                 method: 'DELETE',
             }).then(response => {
                 this.is_fetching = false
@@ -204,6 +208,25 @@ const PythonIntegration = {
                     alertMain.add(`Deletion error. <button class="btn btn-primary" @click="modal.modal('show')">Open modal<button>`)
                 }
             })
+        },
+        async set_default() {
+            this.is_fetching = true
+            try {
+                const resp = await fetch(this.api_url + this.id, {
+                    method: 'PATCH',
+                })
+                if (resp.ok) {
+                    this.$emit('update', {...this.$data, section_name: this.section_name})
+                } else {
+                    const error_data = await resp.json()
+                    this.handleError(error_data)
+                }
+            } catch (e) {
+                console.error(e)
+                showNotify('ERROR', 'Error setting as default')
+            } finally {
+                this.is_fetching = false
+            }
         },
         initialState: () => ({
             config: {},
