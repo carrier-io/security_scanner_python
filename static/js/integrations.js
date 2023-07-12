@@ -45,7 +45,7 @@ const PythonIntegration = {
         </template>
         <template #footer>
             <test-connection-button
-                    :apiPath="api_base + 'check_settings'"
+                    :apiPath="this.$root.build_api_url('integrations', 'check_settings') + '/' + pluginName"
                     :error="error.check_connection"
                     :body_data="body_data"
                     v-model:is_fetching="is_fetching"
@@ -144,9 +144,9 @@ const PythonIntegration = {
             this.load({id})
             this.delete()
         },
-        handleSetDefault(id) {
+        handleSetDefault(id, local=true) {
             this.load({id})
-            this.set_default()
+            this.set_default(local)
         },
         create() {
             this.is_fetching = true
@@ -180,7 +180,7 @@ const PythonIntegration = {
         },
         update() {
             this.is_fetching = true
-            fetch(this.apiPath + this.project_id + '/'+ this.id, {
+            fetch(this.apiPath + this.id, {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(this.body_data)
@@ -209,11 +209,13 @@ const PythonIntegration = {
                 }
             })
         },
-        async set_default() {
+        async set_default(local) {
             this.is_fetching = true
             try {
-                const resp = await fetch(this.api_url + this.id, {
+                const resp = await fetch(this.apiPath + this.project_id + '/' + this.id, {
                     method: 'PATCH',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({local})
                 })
                 if (resp.ok) {
                     this.$emit('update', {...this.$data, section_name: this.section_name})
