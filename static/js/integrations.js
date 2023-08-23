@@ -22,7 +22,7 @@ const PythonIntegration = {
     >
         <template #body>
             <div class="form-group">
-                <h9>Save intermediates to</h9>
+                <!--<h9>Save intermediates to</h9>
                 <p>
                     <h13>Optional</h13>
                 </p>
@@ -30,7 +30,7 @@ const PythonIntegration = {
                        placeholder=""
                        v-model="save_intermediates_to"
                        :class="{ 'is-invalid': error.save_intermediates_to }">
-                <div class="invalid-feedback">[[ error.save_intermediates_to ]]</div>
+                <div class="invalid-feedback">[[ error.save_intermediates_to ]]</div>-->
 
                 <h9>Requirements</h9>
                 <p>
@@ -77,7 +77,7 @@ const PythonIntegration = {
                 is_default,
                 project_id,
 
-                save_intermediates_to,
+                // save_intermediates_to,
                 requirements,
                 status,
             } = this
@@ -87,7 +87,7 @@ const PythonIntegration = {
                 is_default,
                 project_id,
 
-                save_intermediates_to,
+                // save_intermediates_to,
                 requirements,
                 status,
             }
@@ -238,7 +238,7 @@ const PythonIntegration = {
             test_connection_status: 0,
             id: null,
 
-            save_intermediates_to: '/data/intermediates/sast',
+            // save_intermediates_to: '/data/intermediates/sast',
             requirements: "requirements.txt",
 
             pluginName: 'security_scanner_python',
